@@ -56,112 +56,36 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-enum lightState
+uint16_t pinArr[] = {LED1_Pin, LED2_Pin, LED3_Pin, LED4_Pin, LED5_Pin,
+                     LED6_Pin, LED7_Pin, LED8_Pin, LED9_Pin, LED10_Pin, LED11_Pin, LED12_Pin};
+
+GPIO_TypeDef *portArr[] = {LED1_GPIO_Port, LED2_GPIO_Port, LED3_GPIO_Port, LED4_GPIO_Port,
+                           LED5_GPIO_Port, LED6_GPIO_Port, LED7_GPIO_Port, LED8_GPIO_Port, LED9_GPIO_Port,
+                           LED10_GPIO_Port, LED11_GPIO_Port, LED12_GPIO_Port};
+void clearAllCLock()
 {
-  RED1_GREEN2,
-  RED1_YELLOW2,
-  GREEN1_RED2,
-  YELLOW1_RED2,
-};
-int currentState = RED1_GREEN2;
-int nextState = 0;
-void clearAllLed()
-{
-  HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, 1);
-  HAL_GPIO_WritePin(YELLOW1_GPIO_Port, YELLOW1_Pin, 1);
-  HAL_GPIO_WritePin(GREEN1_GPIO_Port, GREEN1_Pin, 1);
-  HAL_GPIO_WritePin(RED2_GPIO_Port, RED2_Pin, 1);
-  HAL_GPIO_WritePin(YELLOW2_GPIO_Port, YELLOW2_Pin, 1);
-  HAL_GPIO_WritePin(GREEN2_GPIO_Port, GREEN2_Pin, 1);
+  HAL_GPIO_WritePin(portArr[0], pinArr[0], 1);
+  HAL_GPIO_WritePin(portArr[1], pinArr[1], 1);
+  HAL_GPIO_WritePin(portArr[2], pinArr[2], 1);
+  HAL_GPIO_WritePin(portArr[3], pinArr[3], 1);
+  HAL_GPIO_WritePin(portArr[4], pinArr[4], 1);
+  HAL_GPIO_WritePin(portArr[5], pinArr[5], 1);
+  HAL_GPIO_WritePin(portArr[6], pinArr[6], 1);
+  HAL_GPIO_WritePin(portArr[7], pinArr[7], 1);
+  HAL_GPIO_WritePin(portArr[8], pinArr[8], 1);
+  HAL_GPIO_WritePin(portArr[9], pinArr[9], 1);
+  HAL_GPIO_WritePin(portArr[10], pinArr[10], 1);
+  HAL_GPIO_WritePin(portArr[11], pinArr[11], 1);
 }
-/// @brief
-/// @param state: RED1_GREEN2 -> RED1_YELLOW2 -> YELLOW1_RED2 -> GREEN1_RED2 ->  RED1_YELLOW2...
-/// @return
-int changeState(int state)
+void setNumberOnClock(int num)
 {
-  clearAllLed();
-  switch (state)
-  {
-  case RED1_GREEN2:
-    HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, 0);
-    HAL_GPIO_WritePin(GREEN2_GPIO_Port, GREEN2_Pin, 0);
-    nextState = 1;
-    return 300;
-  case RED1_YELLOW2:
-    HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, 0);
-    HAL_GPIO_WritePin(YELLOW2_GPIO_Port, YELLOW2_Pin, 0);
-    nextState = 2;
-    return 200;
-  case GREEN1_RED2:
-    HAL_GPIO_WritePin(GREEN1_GPIO_Port, GREEN1_Pin, 0);
-    HAL_GPIO_WritePin(RED2_GPIO_Port, RED2_Pin, 0);
-    nextState = 3;
-    return 300;
-  case YELLOW1_RED2:
-    HAL_GPIO_WritePin(YELLOW1_GPIO_Port, YELLOW1_Pin, 0);
-    HAL_GPIO_WritePin(GREEN2_GPIO_Port, GREEN2_Pin, 0);
-    nextState = 0;
-    return 200;
-  default:
-    return 0;
-  }
+  HAL_GPIO_WritePin(portArr[num], pinArr[num], 0);
 }
-int num0[] = {0, 0, 0, 0, 0, 0, 1};
-int num1[] = {1, 0, 0, 1, 1, 1, 1};
-int num2[] = {0, 0, 1, 0, 0, 1, 0};
-int num3[] = {0, 0, 0, 0, 1, 1, 0};
-int num4[] = {1, 0, 0, 1, 1, 0, 0};
-int num5[] = {0, 1, 0, 0, 1, 0, 0};
-int num6[] = {0, 1, 0, 0, 0, 0, 0};
-int num7[] = {0, 0, 0, 1, 1, 1, 1};
-int num8[] = {0, 0, 0, 0, 0, 0, 0};
-int num9[] = {0, 0, 0, 0, 1, 0, 0};
-void displayNumber(int numberArr[])
+void clearNumberOnClock(int num)
 {
-  HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, numberArr[0]);
-  HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, numberArr[1]);
-  HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, numberArr[2]);
-  HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, numberArr[3]);
-  HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, numberArr[4]);
-  HAL_GPIO_WritePin(F_GPIO_Port, F_Pin, numberArr[5]);
-  HAL_GPIO_WritePin(G_GPIO_Port, G_Pin, numberArr[6]);
+  HAL_GPIO_WritePin(portArr[num], pinArr[num], 1);
 }
-void display7Seg(int num)
-{
-  switch (num)
-  {
-  case 0:
-    displayNumber(num0);
-    break;
-  case 1:
-    displayNumber(num1);
-    break;
-  case 2:
-    displayNumber(num2);
-    break;
-  case 3:
-    displayNumber(num3);
-    break;
-  case 4:
-    displayNumber(num4);
-    break;
-  case 5:
-    displayNumber(num5);
-    break;
-  case 6:
-    displayNumber(num6);
-    break;
-  case 7:
-    displayNumber(num7);
-    break;
-  case 8:
-    displayNumber(num8);
-    break;
-  case 9:
-    displayNumber(num9);
-    break;
-  }
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -199,27 +123,52 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  clearAllLed();
-  int timer = changeState(currentState);
+  clearAllCLock();
+  int second = 30, minute = 59, hour = 23;
+  second /= 5;
+  minute /= 5;
+  hour /= 2;
+  setNumberOnClock(second);
+  setNumberOnClock(minute);
+  setNumberOnClock(hour);
+  int timer = 100;
+  int count = 4;
   setTimer1(timer);
-  int count = timer / 100;
-  setTimer2(100);
-  display7Seg(count--);
   while (1)
   {
     if (timer1_flag == 1)
     {
-      display7Seg(count);
-      currentState = nextState;
-      timer = changeState(currentState);
-      count = timer / 100;
+      if (count != 0)
+      {
+        count--;
+      }
+      else
+      {
+        count = 4;
+        if (second != minute && second != hour)
+        {
+          clearNumberOnClock(second);
+        }
+        second++;
+        if (second > 11)
+        {
+          second = 0;
+          clearNumberOnClock(minute);
+          minute++;
+        }
+        if (minute > 11)
+        {
+          minute = 0;
+          clearNumberOnClock(hour);
+          hour++;
+        }
+        if (hour > 11)
+          hour = 0;
+        setNumberOnClock(hour);
+        setNumberOnClock(minute);
+        setNumberOnClock(second);
+      }
       setTimer1(timer);
-    }
-    if (timer2_flag == 1)
-    {
-      if (count >= 0 && count <= 9)
-        display7Seg(count--);
-      setTimer2(100);
     }
     /* USER CODE END WHILE */
 
@@ -320,29 +269,18 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, A_Pin | B_Pin | C_Pin | D_Pin | E_Pin | F_Pin | G_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED1_Pin | LED2_Pin | LED3_Pin | LED4_Pin | LED5_Pin | LED6_Pin | LED7_Pin | LED8_Pin | LED9_Pin | LED10_Pin | LED11_Pin | LED12_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RED1_Pin | YELLOW1_Pin | GREEN1_Pin | RED2_Pin | YELLOW2_Pin | GREEN2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : A_Pin B_Pin C_Pin D_Pin
-                           E_Pin F_Pin G_Pin */
-  GPIO_InitStruct.Pin = A_Pin | B_Pin | C_Pin | D_Pin | E_Pin | F_Pin | G_Pin;
+  /*Configure GPIO pins : LED1_Pin LED2_Pin LED3_Pin LED4_Pin
+                           LED5_Pin LED6_Pin LED7_Pin LED8_Pin
+                           LED9_Pin LED10_Pin LED11_Pin LED12_Pin */
+  GPIO_InitStruct.Pin = LED1_Pin | LED2_Pin | LED3_Pin | LED4_Pin | LED5_Pin | LED6_Pin | LED7_Pin | LED8_Pin | LED9_Pin | LED10_Pin | LED11_Pin | LED12_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : RED1_Pin YELLOW1_Pin GREEN1_Pin RED2_Pin
-                           YELLOW2_Pin GREEN2_Pin */
-  GPIO_InitStruct.Pin = RED1_Pin | YELLOW1_Pin | GREEN1_Pin | RED2_Pin | YELLOW2_Pin | GREEN2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */
