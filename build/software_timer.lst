@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s 			page 1
+ARM GAS  C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -31,129 +31,225 @@ ARM GAS  C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s 			page 1
    2:Core/Src/software_timer.c **** 
    3:Core/Src/software_timer.c **** int timer1_flag = 0;
    4:Core/Src/software_timer.c **** int timer1_counter = 0;
-   5:Core/Src/software_timer.c **** 
-   6:Core/Src/software_timer.c **** void setTimer1(int duration)
-   7:Core/Src/software_timer.c **** {
-  28              		.loc 1 7 1 view -0
+   5:Core/Src/software_timer.c **** int timer2_flag = 0;
+   6:Core/Src/software_timer.c **** int timer2_counter = 0;
+   7:Core/Src/software_timer.c **** 
+   8:Core/Src/software_timer.c **** void setTimer1(int duration)
+   9:Core/Src/software_timer.c **** {
+  28              		.loc 1 9 1 view -0
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
   32              		@ link register save eliminated.
-   8:Core/Src/software_timer.c ****     timer1_counter = duration;
-  33              		.loc 1 8 5 view .LVU1
-  34              		.loc 1 8 20 is_stmt 0 view .LVU2
+  10:Core/Src/software_timer.c ****     timer1_counter = duration;
+  33              		.loc 1 10 5 view .LVU1
+  34              		.loc 1 10 20 is_stmt 0 view .LVU2
   35 0000 024B     		ldr	r3, .L2
   36 0002 1860     		str	r0, [r3]
-   9:Core/Src/software_timer.c ****     timer1_flag = 0;
-  37              		.loc 1 9 5 is_stmt 1 view .LVU3
-  38              		.loc 1 9 17 is_stmt 0 view .LVU4
+  11:Core/Src/software_timer.c ****     timer1_flag = 0;
+  37              		.loc 1 11 5 is_stmt 1 view .LVU3
+  38              		.loc 1 11 17 is_stmt 0 view .LVU4
   39 0004 024B     		ldr	r3, .L2+4
   40 0006 0022     		movs	r2, #0
   41 0008 1A60     		str	r2, [r3]
-  10:Core/Src/software_timer.c **** }
-  42              		.loc 1 10 1 view .LVU5
+  12:Core/Src/software_timer.c **** }
+  42              		.loc 1 12 1 view .LVU5
   43 000a 7047     		bx	lr
   44              	.L3:
   45              		.align	2
   46              	.L2:
+ARM GAS  C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s 			page 2
+
+
   47 000c 00000000 		.word	timer1_counter
   48 0010 00000000 		.word	timer1_flag
-ARM GAS  C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s 			page 2
-
-
   49              		.cfi_endproc
   50              	.LFE65:
-  52              		.section	.text.timerRun,"ax",%progbits
+  52              		.section	.text.setTimer2,"ax",%progbits
   53              		.align	1
-  54              		.global	timerRun
+  54              		.global	setTimer2
   55              		.syntax unified
   56              		.thumb
   57              		.thumb_func
-  59              	timerRun:
-  60              	.LFB66:
-  11:Core/Src/software_timer.c **** 
-  12:Core/Src/software_timer.c **** void timerRun()
-  13:Core/Src/software_timer.c **** {
-  61              		.loc 1 13 1 is_stmt 1 view -0
-  62              		.cfi_startproc
-  63              		@ args = 0, pretend = 0, frame = 0
-  64              		@ frame_needed = 0, uses_anonymous_args = 0
-  65              		@ link register save eliminated.
-  14:Core/Src/software_timer.c ****     if (timer1_counter > 0)
-  66              		.loc 1 14 5 view .LVU7
-  67              		.loc 1 14 24 is_stmt 0 view .LVU8
-  68 0000 064B     		ldr	r3, .L7
-  69 0002 1B68     		ldr	r3, [r3]
-  70              		.loc 1 14 8 view .LVU9
-  71 0004 002B     		cmp	r3, #0
-  72 0006 04DD     		ble	.L4
-  15:Core/Src/software_timer.c ****     {
-  16:Core/Src/software_timer.c ****         timer1_counter--;
-  73              		.loc 1 16 9 is_stmt 1 view .LVU10
-  74              		.loc 1 16 23 is_stmt 0 view .LVU11
-  75 0008 013B     		subs	r3, r3, #1
-  76 000a 044A     		ldr	r2, .L7
-  77 000c 1360     		str	r3, [r2]
-  17:Core/Src/software_timer.c ****         if (timer1_counter <= 0)
-  78              		.loc 1 17 9 is_stmt 1 view .LVU12
-  79              		.loc 1 17 12 is_stmt 0 view .LVU13
-  80 000e 002B     		cmp	r3, #0
-  81 0010 00DD     		ble	.L6
-  82              	.L4:
-  18:Core/Src/software_timer.c ****         {
-  19:Core/Src/software_timer.c ****             timer1_flag = 1;
-  20:Core/Src/software_timer.c ****         }
-  21:Core/Src/software_timer.c ****     }
-  22:Core/Src/software_timer.c **** }...
-  83              		.loc 1 22 1 view .LVU14
-  84 0012 7047     		bx	lr
-  85              	.L6:
-  19:Core/Src/software_timer.c ****             timer1_flag = 1;
-  86              		.loc 1 19 13 is_stmt 1 view .LVU15
-  19:Core/Src/software_timer.c ****             timer1_flag = 1;
-  87              		.loc 1 19 25 is_stmt 0 view .LVU16
-  88 0014 024B     		ldr	r3, .L7+4
-  89 0016 0122     		movs	r2, #1
-  90 0018 1A60     		str	r2, [r3]
-  91              		.loc 1 22 1 view .LVU17
-  92 001a FAE7     		b	.L4
-  93              	.L8:
-ARM GAS  C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s 			page 3
+  59              	setTimer2:
+  60              	.LVL1:
+  61              	.LFB66:
+  13:Core/Src/software_timer.c **** 
+  14:Core/Src/software_timer.c **** void setTimer2(int duration)
+  15:Core/Src/software_timer.c **** {
+  62              		.loc 1 15 1 is_stmt 1 view -0
+  63              		.cfi_startproc
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66              		@ link register save eliminated.
+  16:Core/Src/software_timer.c ****     timer2_counter = duration;
+  67              		.loc 1 16 5 view .LVU7
+  68              		.loc 1 16 20 is_stmt 0 view .LVU8
+  69 0000 024B     		ldr	r3, .L5
+  70 0002 1860     		str	r0, [r3]
+  17:Core/Src/software_timer.c ****     timer2_flag = 0;
+  71              		.loc 1 17 5 is_stmt 1 view .LVU9
+  72              		.loc 1 17 17 is_stmt 0 view .LVU10
+  73 0004 024B     		ldr	r3, .L5+4
+  74 0006 0022     		movs	r2, #0
+  75 0008 1A60     		str	r2, [r3]
+  18:Core/Src/software_timer.c **** }
+  76              		.loc 1 18 1 view .LVU11
+  77 000a 7047     		bx	lr
+  78              	.L6:
+  79              		.align	2
+  80              	.L5:
+  81 000c 00000000 		.word	timer2_counter
+  82 0010 00000000 		.word	timer2_flag
+  83              		.cfi_endproc
+  84              	.LFE66:
+  86              		.section	.text.timerRun,"ax",%progbits
+  87              		.align	1
+  88              		.global	timerRun
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	timerRun:
+  94              	.LFB67:
+  19:Core/Src/software_timer.c **** 
+  20:Core/Src/software_timer.c **** void timerRun()
+  21:Core/Src/software_timer.c **** {
+  95              		.loc 1 21 1 is_stmt 1 view -0
+  96              		.cfi_startproc
+  97              		@ args = 0, pretend = 0, frame = 0
+  98              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s 			page 3
 
 
-  94              		.align	2
-  95              	.L7:
-  96 001c 00000000 		.word	timer1_counter
-  97 0020 00000000 		.word	timer1_flag
-  98              		.cfi_endproc
-  99              	.LFE66:
- 101              		.global	timer1_counter
- 102              		.section	.bss.timer1_counter,"aw",%nobits
- 103              		.align	2
- 106              	timer1_counter:
- 107 0000 00000000 		.space	4
- 108              		.global	timer1_flag
- 109              		.section	.bss.timer1_flag,"aw",%nobits
- 110              		.align	2
- 113              	timer1_flag:
- 114 0000 00000000 		.space	4
- 115              		.text
- 116              	.Letext0:
- 117              		.file 2 "Core/Inc/software_time.h"
-ARM GAS  C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s 			page 4
+  99              		@ link register save eliminated.
+  22:Core/Src/software_timer.c ****     if (timer1_counter > 0)
+ 100              		.loc 1 22 5 view .LVU13
+ 101              		.loc 1 22 24 is_stmt 0 view .LVU14
+ 102 0000 0D4B     		ldr	r3, .L12
+ 103 0002 1B68     		ldr	r3, [r3]
+ 104              		.loc 1 22 8 view .LVU15
+ 105 0004 002B     		cmp	r3, #0
+ 106 0006 04DD     		ble	.L8
+  23:Core/Src/software_timer.c ****     {
+  24:Core/Src/software_timer.c ****         timer1_counter--;
+ 107              		.loc 1 24 9 is_stmt 1 view .LVU16
+ 108              		.loc 1 24 23 is_stmt 0 view .LVU17
+ 109 0008 013B     		subs	r3, r3, #1
+ 110 000a 0B4A     		ldr	r2, .L12
+ 111 000c 1360     		str	r3, [r2]
+  25:Core/Src/software_timer.c ****         if (timer1_counter <= 0)
+ 112              		.loc 1 25 9 is_stmt 1 view .LVU18
+ 113              		.loc 1 25 12 is_stmt 0 view .LVU19
+ 114 000e 002B     		cmp	r3, #0
+ 115 0010 09DD     		ble	.L10
+ 116              	.L8:
+  26:Core/Src/software_timer.c ****         {
+  27:Core/Src/software_timer.c ****             timer1_flag = 1;
+  28:Core/Src/software_timer.c ****         }
+  29:Core/Src/software_timer.c ****     }
+  30:Core/Src/software_timer.c ****     if (timer2_counter > 0)
+ 117              		.loc 1 30 5 is_stmt 1 view .LVU20
+ 118              		.loc 1 30 24 is_stmt 0 view .LVU21
+ 119 0012 0A4B     		ldr	r3, .L12+4
+ 120 0014 1B68     		ldr	r3, [r3]
+ 121              		.loc 1 30 8 view .LVU22
+ 122 0016 002B     		cmp	r3, #0
+ 123 0018 04DD     		ble	.L7
+  31:Core/Src/software_timer.c ****     {
+  32:Core/Src/software_timer.c ****         timer2_counter--;
+ 124              		.loc 1 32 9 is_stmt 1 view .LVU23
+ 125              		.loc 1 32 23 is_stmt 0 view .LVU24
+ 126 001a 013B     		subs	r3, r3, #1
+ 127 001c 074A     		ldr	r2, .L12+4
+ 128 001e 1360     		str	r3, [r2]
+  33:Core/Src/software_timer.c ****         if (timer2_counter <= 0)
+ 129              		.loc 1 33 9 is_stmt 1 view .LVU25
+ 130              		.loc 1 33 12 is_stmt 0 view .LVU26
+ 131 0020 002B     		cmp	r3, #0
+ 132 0022 04DD     		ble	.L11
+ 133              	.L7:
+  34:Core/Src/software_timer.c ****         {
+  35:Core/Src/software_timer.c ****             timer2_flag = 1;
+  36:Core/Src/software_timer.c ****         }
+  37:Core/Src/software_timer.c ****     }
+  38:Core/Src/software_timer.c **** }...
+ 134              		.loc 1 38 1 view .LVU27
+ 135 0024 7047     		bx	lr
+ 136              	.L10:
+  27:Core/Src/software_timer.c ****             timer1_flag = 1;
+ 137              		.loc 1 27 13 is_stmt 1 view .LVU28
+ARM GAS  C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s 			page 4
+
+
+  27:Core/Src/software_timer.c ****             timer1_flag = 1;
+ 138              		.loc 1 27 25 is_stmt 0 view .LVU29
+ 139 0026 064B     		ldr	r3, .L12+8
+ 140 0028 0122     		movs	r2, #1
+ 141 002a 1A60     		str	r2, [r3]
+ 142 002c F1E7     		b	.L8
+ 143              	.L11:
+  35:Core/Src/software_timer.c ****             timer2_flag = 1;
+ 144              		.loc 1 35 13 is_stmt 1 view .LVU30
+  35:Core/Src/software_timer.c ****             timer2_flag = 1;
+ 145              		.loc 1 35 25 is_stmt 0 view .LVU31
+ 146 002e 054B     		ldr	r3, .L12+12
+ 147 0030 0122     		movs	r2, #1
+ 148 0032 1A60     		str	r2, [r3]
+ 149              		.loc 1 38 1 view .LVU32
+ 150 0034 F6E7     		b	.L7
+ 151              	.L13:
+ 152 0036 00BF     		.align	2
+ 153              	.L12:
+ 154 0038 00000000 		.word	timer1_counter
+ 155 003c 00000000 		.word	timer2_counter
+ 156 0040 00000000 		.word	timer1_flag
+ 157 0044 00000000 		.word	timer2_flag
+ 158              		.cfi_endproc
+ 159              	.LFE67:
+ 161              		.global	timer2_counter
+ 162              		.section	.bss.timer2_counter,"aw",%nobits
+ 163              		.align	2
+ 166              	timer2_counter:
+ 167 0000 00000000 		.space	4
+ 168              		.global	timer2_flag
+ 169              		.section	.bss.timer2_flag,"aw",%nobits
+ 170              		.align	2
+ 173              	timer2_flag:
+ 174 0000 00000000 		.space	4
+ 175              		.global	timer1_counter
+ 176              		.section	.bss.timer1_counter,"aw",%nobits
+ 177              		.align	2
+ 180              	timer1_counter:
+ 181 0000 00000000 		.space	4
+ 182              		.global	timer1_flag
+ 183              		.section	.bss.timer1_flag,"aw",%nobits
+ 184              		.align	2
+ 187              	timer1_flag:
+ 188 0000 00000000 		.space	4
+ 189              		.text
+ 190              	.Letext0:
+ 191              		.file 2 "Core/Inc/software_time.h"
+ARM GAS  C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 software_timer.c
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:19     .text.setTimer1:00000000 $t
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:25     .text.setTimer1:00000000 setTimer1
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:47     .text.setTimer1:0000000c $d
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:106    .bss.timer1_counter:00000000 timer1_counter
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:113    .bss.timer1_flag:00000000 timer1_flag
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:53     .text.timerRun:00000000 $t
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:59     .text.timerRun:00000000 timerRun
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:96     .text.timerRun:0000001c $d
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:103    .bss.timer1_counter:00000000 $d
-C:\Users\phong\AppData\Local\Temp\ccYMdT2K.s:110    .bss.timer1_flag:00000000 $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:19     .text.setTimer1:00000000 $t
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:25     .text.setTimer1:00000000 setTimer1
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:47     .text.setTimer1:0000000c $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:180    .bss.timer1_counter:00000000 timer1_counter
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:187    .bss.timer1_flag:00000000 timer1_flag
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:53     .text.setTimer2:00000000 $t
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:59     .text.setTimer2:00000000 setTimer2
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:81     .text.setTimer2:0000000c $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:166    .bss.timer2_counter:00000000 timer2_counter
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:173    .bss.timer2_flag:00000000 timer2_flag
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:87     .text.timerRun:00000000 $t
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:93     .text.timerRun:00000000 timerRun
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:154    .text.timerRun:00000038 $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:163    .bss.timer2_counter:00000000 $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:170    .bss.timer2_flag:00000000 $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:177    .bss.timer1_counter:00000000 $d
+C:\Users\phong\AppData\Local\Temp\cc6Bqxi6.s:184    .bss.timer1_flag:00000000 $d
 
 NO UNDEFINED SYMBOLS

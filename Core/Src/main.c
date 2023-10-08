@@ -200,20 +200,26 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   clearAllLed();
-  // int timer = changeState(currentState);
-  setTimer1(100);
-  int count = 0;
-  display7Seg(0);
+  int timer = changeState(currentState);
+  setTimer1(timer);
+  int count = timer / 100;
+  setTimer2(100);
+  display7Seg(count--);
   while (1)
   {
     if (timer1_flag == 1)
     {
-      if (count >= 10)
-        count = 0;
-      display7Seg(count++);
-      // currentState = nextState;
-      // timer = changeState(currentState);
-      setTimer1(100);
+      display7Seg(count);
+      currentState = nextState;
+      timer = changeState(currentState);
+      count = timer / 100;
+      setTimer1(timer);
+    }
+    if (timer2_flag == 1)
+    {
+      if (count >= 0 && count <= 9)
+        display7Seg(count--);
+      setTimer2(100);
     }
     /* USER CODE END WHILE */
 
