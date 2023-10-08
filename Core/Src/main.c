@@ -58,32 +58,50 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 enum lightState
 {
-  RED,
-  YELLOW,
-  GREEN
+  RED1_GREEN2,
+  RED1_YELLOW2,
+  GREEN1_RED2,
+  YELLOW1_RED2,
 };
+int currentState = RED1_GREEN2;
+int nextState = 0;
+void clearAllLed()
+{
+  HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, 1);
+  HAL_GPIO_WritePin(YELLOW1_GPIO_Port, YELLOW1_Pin, 1);
+  HAL_GPIO_WritePin(GREEN1_GPIO_Port, GREEN1_Pin, 1);
+  HAL_GPIO_WritePin(RED2_GPIO_Port, RED2_Pin, 1);
+  HAL_GPIO_WritePin(YELLOW2_GPIO_Port, YELLOW2_Pin, 1);
+  HAL_GPIO_WritePin(GREEN2_GPIO_Port, GREEN2_Pin, 1);
+}
 /// @brief
-/// @param state: RED -> YELLOW -> GREEN -> RED ...
+/// @param state: RED1_GREEN2 -> RED1_YELLOW2 -> YELLOW1_RED2 -> GREEN1_RED2 ->  RED1_YELLOW2...
 /// @return
 int changeState(int state)
 {
+  clearAllLed();
   switch (state)
   {
-  case RED:
-    HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
-    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
-    return 500;
-    break;
-  case YELLOW:
-    HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, 0);
-    HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 1);
-    return 200;
-    break;
-  case GREEN:
-    HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, 1);
-    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 0);
+  case RED1_GREEN2:
+    HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, 0);
+    HAL_GPIO_WritePin(GREEN2_GPIO_Port, GREEN2_Pin, 0);
+    nextState = 1;
     return 300;
-    break;
+  case RED1_YELLOW2:
+    HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, 0);
+    HAL_GPIO_WritePin(YELLOW2_GPIO_Port, YELLOW2_Pin, 0);
+    nextState = 2;
+    return 200;
+  case GREEN1_RED2:
+    HAL_GPIO_WritePin(GREEN1_GPIO_Port, GREEN1_Pin, 0);
+    HAL_GPIO_WritePin(RED2_GPIO_Port, RED2_Pin, 0);
+    nextState = 3;
+    return 300;
+  case YELLOW1_RED2:
+    HAL_GPIO_WritePin(YELLOW1_GPIO_Port, YELLOW1_Pin, 0);
+    HAL_GPIO_WritePin(GREEN2_GPIO_Port, GREEN2_Pin, 0);
+    nextState = 0;
+    return 200;
   default:
     return 0;
   }
@@ -91,9 +109,9 @@ int changeState(int state)
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
+ * @brief  The application entry point.
+ * @retval int
+ */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -125,19 +143,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(500);
-  HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, 0);
-  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, 1);
-  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, 1);
-  int currentState = RED;
-  int newTime = 0;
+  clearAllLed();
+  int timer = changeState(currentState);
+  setTimer1(timer);
   while (1)
   {
     if (timer1_flag == 1)
     {
-      currentState++;
-      newTime = changeState(currentState % 3);
-      setTimer1(newTime);
+      currentState = nextState;
+      timer = changeState(currentState);
+      setTimer1(timer);
     }
     /* USER CODE END WHILE */
 
@@ -147,17 +162,17 @@ int main(void)
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+ * @brief System Clock Configuration
+ * @retval None
+ */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+   * in the RCC_OscInitTypeDef structure.
+   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
@@ -168,9 +183,8 @@ void SystemClock_Config(void)
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+   */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -183,10 +197,10 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief TIM2 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief TIM2 Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_TIM2_Init(void)
 {
 
@@ -224,38 +238,35 @@ static void MX_TIM2_Init(void)
   /* USER CODE BEGIN TIM2_Init 2 */
 
   /* USER CODE END TIM2_Init 2 */
-
 }
 
 /**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief GPIO Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED1_Pin|YELLOW1_Pin|GREEN1_Pin|RED2_Pin
-                          |YELLOW2_Pin|GREEN2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RED1_Pin | YELLOW1_Pin | GREEN1_Pin | RED2_Pin | YELLOW2_Pin | GREEN2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : RED1_Pin YELLOW1_Pin GREEN1_Pin RED2_Pin
                            YELLOW2_Pin GREEN2_Pin */
-  GPIO_InitStruct.Pin = RED1_Pin|YELLOW1_Pin|GREEN1_Pin|RED2_Pin
-                          |YELLOW2_Pin|GREEN2_Pin;
+  GPIO_InitStruct.Pin = RED1_Pin | YELLOW1_Pin | GREEN1_Pin | RED2_Pin | YELLOW2_Pin | GREEN2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -266,9 +277,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
@@ -280,14 +291,14 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
