@@ -23,57 +23,70 @@
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
-  /* Private includes ----------------------------------------------------------*/
-  /* USER CODE BEGIN Includes */
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 
-  /* USER CODE END Includes */
+/* USER CODE END Includes */
 
-  /* Exported types ------------------------------------------------------------*/
-  /* USER CODE BEGIN ET */
+/* Exported types ------------------------------------------------------------*/
+/* USER CODE BEGIN ET */
 
-  /* USER CODE END ET */
+/* USER CODE END ET */
 
-  /* Exported constants --------------------------------------------------------*/
-  /* USER CODE BEGIN EC */
+/* Exported constants --------------------------------------------------------*/
+/* USER CODE BEGIN EC */
 
-  /* USER CODE END EC */
+/* USER CODE END EC */
 
-  /* Exported macro ------------------------------------------------------------*/
-  /* USER CODE BEGIN EM */
+/* Exported macro ------------------------------------------------------------*/
+/* USER CODE BEGIN EM */
 
-  /* USER CODE END EM */
+/* USER CODE END EM */
 
-  /* Exported functions prototypes ---------------------------------------------*/
-  void Error_Handler(void);
+/* Exported functions prototypes ---------------------------------------------*/
+void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define RED1_Pin GPIO_PIN_2
-#define RED1_GPIO_Port GPIOA
-#define YELLOW1_Pin GPIO_PIN_3
-#define YELLOW1_GPIO_Port GPIOA
-#define GREEN1_Pin GPIO_PIN_4
-#define GREEN1_GPIO_Port GPIOA
-#define RED2_Pin GPIO_PIN_5
-#define RED2_GPIO_Port GPIOA
-#define YELLOW2_Pin GPIO_PIN_6
-#define YELLOW2_GPIO_Port GPIOA
-#define GREEN2_Pin GPIO_PIN_7
-#define GREEN2_GPIO_Port GPIOA
+#define A_Pin GPIO_PIN_0
+#define A_GPIO_Port GPIOA
+#define B_Pin GPIO_PIN_1
+#define B_GPIO_Port GPIOA
+#define C_Pin GPIO_PIN_2
+#define C_GPIO_Port GPIOA
+#define D_Pin GPIO_PIN_3
+#define D_GPIO_Port GPIOA
+#define E_Pin GPIO_PIN_4
+#define E_GPIO_Port GPIOA
+#define F_Pin GPIO_PIN_5
+#define F_GPIO_Port GPIOA
+#define G_Pin GPIO_PIN_6
+#define G_GPIO_Port GPIOA
+#define RED1_Pin GPIO_PIN_0
+#define RED1_GPIO_Port GPIOB
+#define YELLOW1_Pin GPIO_PIN_1
+#define YELLOW1_GPIO_Port GPIOB
+#define GREEN1_Pin GPIO_PIN_2
+#define GREEN1_GPIO_Port GPIOB
+#define RED2_Pin GPIO_PIN_3
+#define RED2_GPIO_Port GPIOB
+#define YELLOW2_Pin GPIO_PIN_4
+#define YELLOW2_GPIO_Port GPIOB
+#define GREEN2_Pin GPIO_PIN_5
+#define GREEN2_GPIO_Port GPIOB
 
-  /* USER CODE BEGIN Private defines */
+/* USER CODE BEGIN Private defines */
 
-  /* USER CODE END Private defines */
+/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }

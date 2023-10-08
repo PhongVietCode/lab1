@@ -106,6 +106,62 @@ int changeState(int state)
     return 0;
   }
 }
+int num0[] = {0, 0, 0, 0, 0, 0, 1};
+int num1[] = {1, 0, 0, 1, 1, 1, 1};
+int num2[] = {0, 0, 1, 0, 0, 1, 0};
+int num3[] = {0, 0, 0, 0, 1, 1, 0};
+int num4[] = {1, 0, 0, 1, 1, 0, 0};
+int num5[] = {0, 1, 0, 0, 1, 0, 0};
+int num6[] = {0, 1, 0, 0, 0, 0, 0};
+int num7[] = {0, 0, 0, 1, 1, 1, 1};
+int num8[] = {0, 0, 0, 0, 0, 0, 0};
+int num9[] = {0, 0, 0, 0, 1, 0, 0};
+void displayNumber(int numberArr[])
+{
+  HAL_GPIO_WritePin(A_GPIO_Port, A_Pin, numberArr[0]);
+  HAL_GPIO_WritePin(B_GPIO_Port, B_Pin, numberArr[1]);
+  HAL_GPIO_WritePin(C_GPIO_Port, C_Pin, numberArr[2]);
+  HAL_GPIO_WritePin(D_GPIO_Port, D_Pin, numberArr[3]);
+  HAL_GPIO_WritePin(E_GPIO_Port, E_Pin, numberArr[4]);
+  HAL_GPIO_WritePin(F_GPIO_Port, F_Pin, numberArr[5]);
+  HAL_GPIO_WritePin(G_GPIO_Port, G_Pin, numberArr[6]);
+}
+void display7Seg(int num)
+{
+  switch (num)
+  {
+  case 0:
+    displayNumber(num0);
+    break;
+  case 1:
+    displayNumber(num1);
+    break;
+  case 2:
+    displayNumber(num2);
+    break;
+  case 3:
+    displayNumber(num3);
+    break;
+  case 4:
+    displayNumber(num4);
+    break;
+  case 5:
+    displayNumber(num5);
+    break;
+  case 6:
+    displayNumber(num6);
+    break;
+  case 7:
+    displayNumber(num7);
+    break;
+  case 8:
+    displayNumber(num8);
+    break;
+  case 9:
+    displayNumber(num9);
+    break;
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -144,15 +200,20 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   clearAllLed();
-  int timer = changeState(currentState);
-  setTimer1(timer);
+  // int timer = changeState(currentState);
+  setTimer1(100);
+  int count = 0;
+  display7Seg(0);
   while (1)
   {
     if (timer1_flag == 1)
     {
-      currentState = nextState;
-      timer = changeState(currentState);
-      setTimer1(timer);
+      if (count >= 10)
+        count = 0;
+      display7Seg(count++);
+      // currentState = nextState;
+      // timer = changeState(currentState);
+      setTimer1(100);
     }
     /* USER CODE END WHILE */
 
@@ -253,9 +314,21 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED1_Pin | YELLOW1_Pin | GREEN1_Pin | RED2_Pin | YELLOW2_Pin | GREEN2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, A_Pin | B_Pin | C_Pin | D_Pin | E_Pin | F_Pin | G_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, RED1_Pin | YELLOW1_Pin | GREEN1_Pin | RED2_Pin | YELLOW2_Pin | GREEN2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : A_Pin B_Pin C_Pin D_Pin
+                           E_Pin F_Pin G_Pin */
+  GPIO_InitStruct.Pin = A_Pin | B_Pin | C_Pin | D_Pin | E_Pin | F_Pin | G_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : RED1_Pin YELLOW1_Pin GREEN1_Pin RED2_Pin
                            YELLOW2_Pin GREEN2_Pin */
@@ -263,7 +336,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */
